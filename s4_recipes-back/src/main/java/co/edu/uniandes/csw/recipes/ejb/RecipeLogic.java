@@ -36,6 +36,10 @@ public class RecipeLogic {
         if (recipeEntity.getDescription().isEmpty() || recipeEntity.getDescription() == null || recipeEntity.getDescription().length() > 150) {
             throw new BusinessLogicException("La descripcion de la Receta no es valido:\"" + recipeEntity.getName() + "\"");
         }
+        if(recipeEntity.getIngredientes().size()<1){
+                        throw new BusinessLogicException("La receta no tiene ingredientes\"" + recipeEntity.getName() + "\"");
+
+        }
             persistence.createRecipe(recipeEntity);
             return recipeEntity;
         }
