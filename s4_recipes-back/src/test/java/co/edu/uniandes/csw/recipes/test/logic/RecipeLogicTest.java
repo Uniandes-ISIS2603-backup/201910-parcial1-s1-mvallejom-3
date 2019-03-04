@@ -6,6 +6,7 @@
 package co.edu.uniandes.csw.recipes.test.logic;
 
 import co.edu.uniandes.csw.recipes.ejb.RecipeLogic;
+import co.edu.uniandes.csw.recipes.entities.IngredienteEntity;
 import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
 import co.edu.uniandes.csw.recipes.exceptions.BusinessLogicException;
 import co.edu.uniandes.csw.recipes.persistence.RecipePersistence;
@@ -45,6 +46,8 @@ public class RecipeLogicTest {
     private EntityManager em;
 
     private List<RecipeEntity> data = new ArrayList<RecipeEntity>();
+
+        private List<IngredienteEntity> ingredientesData = new ArrayList();
 
     @Deployment
     public static JavaArchive createDeployment() {
@@ -93,8 +96,17 @@ public class RecipeLogicTest {
             RecipeEntity entity = factory.manufacturePojo(RecipeEntity.class);
             em.persist(entity);
             data.add(entity);
+           
 
         }
+         for (int i = 0; i < 3; i++) {
+             IngredienteEntity entity1 = factory.manufacturePojo(IngredienteEntity.class);
+            em.persist(entity1);
+            ingredientesData.add(entity1);
+            
+        }
+                         data.get(0).setIngredientes(ingredientesData);
+
     }
 
     @Test
