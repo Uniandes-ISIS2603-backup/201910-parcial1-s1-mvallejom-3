@@ -37,15 +37,15 @@ public class RecipeLogicTest {
 
     @Inject
     private RecipeLogic recipeLogic;
-    
-        @Inject
+
+    @Inject
     private UserTransaction utx;
 
- @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
- 
-     private List<RecipeEntity> data = new ArrayList<RecipeEntity>();
-     
+
+    private List<RecipeEntity> data = new ArrayList<RecipeEntity>();
+
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
@@ -88,14 +88,24 @@ public class RecipeLogicTest {
      * pruebas.
      */
     private void insertData() {
-      
+
         for (int i = 0; i < 3; i++) {
             RecipeEntity entity = factory.manufacturePojo(RecipeEntity.class);
             em.persist(entity);
             data.add(entity);
-           
+
         }
     }
+
+    @Test
+    public void createRecipeTest() throws BusinessLogicException {
+        RecipeEntity newEntity = factory.manufacturePojo(RecipeEntity.class);
+        while (newEntity.getName().length() > 30 || newEntity.getDescription().length() > 150) {
+            newEntity = factory.manufacturePojo(RecipeEntity.class);
+        }
+        recipeLogic.createRecipe(newEntity);
+    }
+
     @Test(expected = BusinessLogicException.class)
     public void createRecipeMismoNombreTest() throws BusinessLogicException {
         RecipeEntity newEntity = factory.manufacturePojo(RecipeEntity.class);
@@ -130,6 +140,5 @@ public class RecipeLogicTest {
         }
         return resp;
     }
-    
-    
+
 }
